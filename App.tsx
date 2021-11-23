@@ -1,14 +1,15 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import { Text, View,ImageBackground } from 'react-native';
+import { Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import  {useFonts} from "@use-expo/font"
 import styles from "./style/styles"
 import {NavigationContainer} from "@react-navigation/native"
 import {createStackNavigator} from "@react-navigation/stack"
 import Landing from './components/Landing';
+import Register from './components/Register';
+import Login from './components/Login';
 import {apiKey,authDomain,appId,measurementId,messagingSenderId,projectId,storageBucket} from "@env"
-console.log(apiKey)
-// import image from "./assets/imgs/img.jpg"
 import {initializeApp} from "firebase/app"
 const firebaseConfig = {
 
@@ -27,15 +28,16 @@ const firebaseConfig = {
   measurementId
 
 };
-
-
-// Initialize Firebase
-
 const app = initializeApp(firebaseConfig);
-// if(firebase.apps.length === 0 ){
 
-// }
 
+
+export type RootStackParamList = {
+  Landing: undefined;
+  Login: undefined;
+  Register: undefined;
+   Home: { Id: string }
+};
 
 
 const customFonts ={
@@ -43,7 +45,7 @@ const customFonts ={
   Roboto: require("./assets/fonts/Roboto.ttf"),
 }
 
-const Stack =  createStackNavigator()
+const Stack =  createStackNavigator<RootStackParamList>()
 export default function App() {
      const [isLoaded] = useFonts(customFonts);
    if (!isLoaded) {
@@ -60,8 +62,9 @@ export default function App() {
       <SafeAreaProvider>
         <Stack.Navigator initialRouteName={"Landing"}>
        <Stack.Screen name="Landing" component={Landing} options={{headerShown:false}} />
+       <Stack.Screen name="Register" component={Register} options={{headerShown:false}} />
+       <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
         </Stack.Navigator>
-         {/* <Landing/> */}
 
       </SafeAreaProvider>
           </View>
