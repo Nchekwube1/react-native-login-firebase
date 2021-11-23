@@ -35,7 +35,7 @@ function Login() {
               <View style={styles.smalldiv}><Text style={styles.smallerText}>fill the details to login to your account</Text></View>
           </View>
            <TextInput placeholder="email" onChangeText={(email)=>{setDetails({...details,email})}} value={details.email} style={styles.input} />
-           <TextInput placeholder="password" onChangeText={(password)=>{setDetails({...details,password})}}  value={details.password} style={styles.input}/>
+           <TextInput placeholder="password"  secureTextEntry={true} onChangeText={(password)=>{setDetails({...details,password})}}  value={details.password} style={styles.input}/>
            <Sign title="signin" onPress={register}/>
      <View style={
          {marginTop:13,marginBottom:24}
