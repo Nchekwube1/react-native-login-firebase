@@ -1,16 +1,20 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import {Provider} from "react-redux"
+import {store} from "./state"
 import { Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import  {useFonts} from "@use-expo/font"
 import styles from "./style/styles"
 import {NavigationContainer} from "@react-navigation/native"
-import {createStackNavigator} from "@react-navigation/stack"
+import {createStackNavigator,StackNavigationProp} from "@react-navigation/stack"
 import Landing from './components/Landing';
 import Register from './components/Register';
 import Login from './components/Login';
 import {apiKey,authDomain,appId,measurementId,messagingSenderId,projectId,storageBucket} from "@env"
 import {initializeApp} from "firebase/app"
+import Home from './components/Home';
+
 const firebaseConfig = {
 
   apiKey,
@@ -31,13 +35,16 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 
 
-
 export type RootStackParamList = {
   Landing: undefined;
   Login: undefined;
   Register: undefined;
-   Home: { Id: string }
+   Home: { Id: string }|undefined
 };
+
+export type rootStackNavProps<T extends keyof RootStackParamList>={
+    navigation:StackNavigationProp<RootStackParamList,T>
+}
 
 
 const customFonts ={
@@ -57,6 +64,7 @@ export default function App() {
     }
 
     return (
+      <Provider store={store}>
       <NavigationContainer>
          <View style={styles.container}>
       <SafeAreaProvider>
@@ -64,11 +72,13 @@ export default function App() {
        <Stack.Screen name="Landing" component={Landing} options={{headerShown:false}} />
        <Stack.Screen name="Register" component={Register} options={{headerShown:false}} />
        <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
+       <Stack.Screen name="Home" component={Home} options={{headerShown:false}} />
         </Stack.Navigator>
 
       </SafeAreaProvider>
           </View>
 
-      </NavigationContainer>
+   </NavigationContainer>
+   </Provider>
     )
 }

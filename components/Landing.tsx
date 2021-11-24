@@ -1,20 +1,17 @@
 import React,{useState} from 'react';
 import { Text, View,ImageBackground } from 'react-native';
 import img from "../assets/images/img.jpg";
-import { useNavigation} from "@react-navigation/native"
 import styles from "../style/styles"
 import Button from './Pressable';
-// import { NativeStackScreenProps } from '@react-navigation/native-stack';
-// import {RootStackParamList} from "../App"
-// type Props = NativeStackScreenProps<RootStackParamList, 'Landing'>;
+import {rootStackNavProps} from "../App"
 
-function Landing() {
-    const navigator = useNavigation()
+
+function Landing({navigation}:rootStackNavProps<"Landing">) {
     const loginPress=()=>{
-        navigator.navigate("Login")
+        navigation.navigate("Login")
     }
     const registerPress=()=>{
-        navigator.navigate("Register")
+        navigation.navigate("Register")
       
     }
     return (

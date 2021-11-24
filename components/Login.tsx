@@ -5,28 +5,54 @@ import back from "../assets/images/back.svg"
 import styles from "../style/styles"
 import Sign from './Regbtn';
 import Button from './Pressable';
-import { useNavigation} from "@react-navigation/native"
+import {globalState} from "../state/reducer/userReducer"
+import {useSelector,useDispatch} from "react-redux"
+import Alert from './Alert';
 
-function Login() {
-    const navigator =useNavigation()
+import {app,rootStackNavProps} from "../App"
+import {signInWithEmailAndPassword,getAuth,Auth} from 'firebase/auth'
+import {ActionTypes} from "../state/actionTypes"
+
+function Login(  {navigation}:rootStackNavProps<"Login">) {
+  const dispatch = useDispatch()
+  const init = useSelector((state:globalState)=> state)
+const {state} = init
+    let auth = getAuth(app)
+
    const [details,setDetails] = useState({
         email:"",
         password:""
     })
 
-    const register = ()=>{
-        console.log(details.email,details.password,)
+       const loginUser = (authe:Auth,email:string, password:string) => {
+    signInWithEmailAndPassword(authe,email, password).then((res)=>{
+      if(!res){
+        dispatch(ActionTypes.LOGIN_ERROR)
+        
+      }
+        console.log(res)
+        navigation.navigate("Home")
+    }).catch (error=> {
+      console.log(error)
+    dispatch({type:ActionTypes.LOGIN_ERROR})
+  })
+};
+
+
+    const login = async ()=>{
+    await loginUser(auth,details.email,details.password)
     }
     const backClick =()=>{
- navigator.goBack()
+ navigation.goBack()
 
     }
     const signbtn =()=>{
-        navigator.navigate("Register")
+        navigation.navigate("Register")
     }
     return (
            <ImageBackground source={img } style={styles.bgImg}>
         <View style={styles.landing}> 
+        {state.error? <Alert text={state.errorText}/>:null}
           <View style={styles.backdiv}>
              <Pressable onPress={backClick} style={styles.backimgdiv}><Image source={back} style={styles.backimg}/></Pressable>
           </View>
@@ -36,7 +62,7 @@ function Login() {
           </View>
            <TextInput placeholder="email" onChangeText={(email)=>{setDetails({...details,email})}} value={details.email} style={styles.input} />
            <TextInput placeholder="password"  secureTextEntry={true} onChangeText={(password)=>{setDetails({...details,password})}}  value={details.password} style={styles.input}/>
-           <Sign title="signin" onPress={register}/>
+           <Sign title="signin" onPress={login}/>
      <View style={
          {marginTop:13,marginBottom:24}
      }>

@@ -66,12 +66,32 @@ const styles = StyleSheet.create({
    flexDirection:"column",
    backgroundColor:"rgba(0,0,0,0.8)",
     },
+    home:{
+    position:"relative",
+    width:"100vw",
+    height:"100vh",
+   padding:6,
+   display:"flex",
+   alignItems:"center",
+   flexDirection:"column",
+   backgroundColor:colors.white
+    },
     ltext:{
         position:"relative",
         fontFamily:font.montserrat,
         fontSize:text.bigger,
         textAlign:"center",
         color:colors.white,
+        width:"100%",
+        height:"100%",
+        paddingTop:20
+    },
+    htext:{
+        position:"relative",
+        fontFamily:font.montserrat,
+        fontSize:text.bigger,
+        textAlign:"center",
+        color:colors.black,
         width:"100%",
         height:"100%",
         paddingTop:20
@@ -89,7 +109,6 @@ const styles = StyleSheet.create({
         borderColor:colors.gold,
           alignItems: 'center',
     justifyContent: 'center',
-    // paddingVertical: 12,
     height:42,
     borderRadius: 2,
     elevation: 3,
@@ -164,7 +183,74 @@ const styles = StyleSheet.create({
        width:"100%"
        ,marginBottom:55,
        paddingLeft:"8%"
+    },
+    logout:{
+     position:"relative",
+     paddingVertical:10,
+     paddingHorizontal:12,
+     borderRadius:4,
+     backgroundColor:"red"
+    },
+    logoutview:{
+        position:"relative",
+        width:"100%",
+             display:"flex",
+      justifyContent:"flex-end",
+      alignItems:"flex-end",
+    },
+    alertModal:{
+     position:"absolute",
+     height:"100vh",
+     width:"100vw",
+     top:0,
+     left:0,
+     backgroundColor:"rgba(255,255,255,0.5)",
+     display:"flex",
+     justifyContent:"center",
+     alignItems:"center",
+     zIndex:500
+        },
+    alertBox:{
+        position:"relative",
+        width:"70%",
+        height:"25%",
+        borderRadius:4,
+        backgroundColor:colors.white,
+        elevation:6,
+        shadowColor:"rgba(0,0,0,0.4)",
+     display:"flex",
+     justifyContent:"center",
+     alignItems:"center"
+    },
+    alertText:{
+        position:"relative",
+        textAlign:"center",
+        fontFamily:font.roboto,
+        fontSize:text.bigger,
+        color:colors.black,
+        marginBottom:13,
+        textTransform:"capitalize"
+
+
+    },
+    alertBtn:{
+        position:"relative",
+        paddingVertical:7,
+        paddingHorizontal:25,
+        borderRadius:3,
+        backgroundColor:colors.black,
+        marginTop:13
+
+    },
+    alertBtntext:{
+    position:"relative",
+        textAlign:"center",
+        fontFamily:font.roboto,
+        fontSize:text.big,
+        color:colors.white,
+        textTransform:"capitalize"
     }
+
 })
 
 export default styles

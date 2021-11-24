@@ -2,15 +2,19 @@ import React,{useState} from 'react';
 import { Text, View,ImageBackground,TextInput, Image,Pressable } from 'react-native';
 import img from "../assets/images/img.jpg"
 import back from "../assets/images/back.svg"
-import { useNavigation} from "@react-navigation/native"
 import styles from "../style/styles"
 import Sign from './Regbtn';
 import Button from './Pressable';
-import {app} from "../App"
+import {app, rootStackNavProps} from "../App"
+
+import {globalState} from "../state/reducer/userReducer"
+import {useSelector} from "react-redux"
+import Alert from './Alert';
+
 import {createUserWithEmailAndPassword,getAuth,Auth} from 'firebase/auth'
-// import firebase from "firebase/app"
-function Register() {
-    const navigator = useNavigation()
+function Register({navigation}:rootStackNavProps<"Register">) {
+  const init = useSelector((state:globalState)=> state)
+const {state} = init
     let auth = getAuth(app)
 
       const [details,setDetails] = useState({
@@ -20,17 +24,16 @@ function Register() {
     })
     const createUser = (authe:Auth,email:string, password:string) => {
   try {
-    createUserWithEmailAndPassword(authe,email, password).then(()=>{
+    createUserWithEmailAndPassword(authe,email, password).then((res)=>{
         alert("user created successfully")
+        console.log(res)
     })
-    // firebase.createUserWithEmailAndPassword()
   } catch (error) {
-    alert(error);
+    console.log(error);
   }
 };
 
     const register = async ()=>{
-        // console.log(details.email,details.password,details.password2)
         if(details.password!== details.password2){
             alert("Passwords do not match")
         }
@@ -42,14 +45,15 @@ function Register() {
 
     }
     const backClick =()=>{
-        navigator.goBack()
+        navigation.goBack()
     }
     const signbtn =()=>{
-        navigator.navigate("Login")
+        navigation.navigate("Login")
     }
     return (
            <ImageBackground source={img } style={styles.bgImg}>
         <View style={styles.landing}> 
+        {state.error? <Alert text={state.errorText}/>:null}
           <View style={styles.backdiv}>
              <Pressable onPress={backClick} style={styles.backimgdiv}><Image source={back} style={styles.backimg}/></Pressable>
           </View>

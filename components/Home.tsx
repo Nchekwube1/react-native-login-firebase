@@ -1,11 +1,23 @@
 import React,{useState} from 'react';
-import { Text, View,ImageBackground } from 'react-native';
+import { Text, View,Pressable, } from 'react-native';
+import styles from '../style/styles';
+import { rootStackNavProps } from '../App';
+import {globalState} from "../state/reducer/userReducer"
+import {useSelector} from "react-redux"
 
-function Home() {
+function Home({navigation}:rootStackNavProps<"Home">) {
+    const init = useSelector((state:globalState)=> state)
+    const {state} = init
+
+    const logout=()=>{
+        navigation.navigate("Login")
+    }
     return (
-       <View>
+           <View style={styles.home}> 
+           <View style={styles.logoutview}><Pressable  onPress={logout} style={styles.logout}><Text style={styles.smallText}>Logout</Text></Pressable></View>
 
-       </View>
+          <Text style={styles.htext}>You have successfully logged in!!!</Text>
+                </View>
     )
 }
 
