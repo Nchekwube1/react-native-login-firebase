@@ -8,12 +8,14 @@ import Button from './Pressable';
 import {app, rootStackNavProps} from "../App"
 
 import {globalState} from "../state/reducer/userReducer"
-import {useSelector} from "react-redux"
+import {useSelector,useDispatch} from "react-redux"
 import Alert from './Alert';
 
 import {createUserWithEmailAndPassword,getAuth,Auth} from 'firebase/auth'
+import { ActionTypes } from '../state/actionTypes';
 function Register({navigation}:rootStackNavProps<"Register">) {
   const init = useSelector((state:globalState)=> state)
+  const dispatch = useDispatch()
 const {state} = init
     let auth = getAuth(app)
 
@@ -25,20 +27,27 @@ const {state} = init
     const createUser = (authe:Auth,email:string, password:string) => {
   try {
     createUserWithEmailAndPassword(authe,email, password).then((res)=>{
-        alert("user created successfully")
-        console.log(res)
+      dispatch({type:ActionTypes.LOGIN_SUCCESS,payload:{
+        id:res.user.uid,
+        email:res.user.email
+      }})
+        navigation.navigate("Home",{Id:state.user.id as string})
+     
+
     })
   } catch (error) {
-    console.log(error);
+    dispatch({type:ActionTypes.OTHER_ERROR})
   }
 };
 
     const register = async ()=>{
         if(details.password!== details.password2){
-            alert("Passwords do not match")
+             dispatch({type:ActionTypes.PASSWORD_MISMATCH})
+              return
         }
         if(details.password.length<5){
-          alert("Password should be at least 6 chararcters long")
+             dispatch({type:ActionTypes.PASSWORD_SHORT})
+             return
         }
         await createUser(auth,details.email,details.password)
 

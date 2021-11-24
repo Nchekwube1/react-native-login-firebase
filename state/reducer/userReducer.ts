@@ -27,12 +27,15 @@ const reducer = (state:userState = initialState,action:Action):userState=>{
     case ActionTypes.LOGIN_SUCCESS:
         return{ user:action.payload, error:false,errorText:""}
         case ActionTypes.LOGIN_ERROR:
-        return{ user:{}, error:true,errorText:"Invalid Credentials"}
-        
+            return{ user:{}, error:true,errorText:"Invalid Credentials"}
+        case ActionTypes.OTHER_ERROR:
+            return{ user:{}, error:true,errorText:"Oops! an error occured, try again"}
         case ActionTypes.CLOSE_ALERT:
             return{user:{},error:false,errorText:""}
         case ActionTypes.PASSWORD_MISMATCH:
-        return{ user:{}, error:true,errorText:"Passwords do not match"}
+            return{ user:{}, error:true,errorText:"Passwords do not match"}
+        case ActionTypes.PASSWORD_SHORT:
+            return{ user:{}, error:true,errorText:"Password should be at least 6 characters long"}
 
     default:return state
  }

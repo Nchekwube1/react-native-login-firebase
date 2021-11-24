@@ -39,7 +39,7 @@ export type RootStackParamList = {
   Landing: undefined;
   Login: undefined;
   Register: undefined;
-   Home: { Id: string }|undefined
+   Home: { Id: string }
 };
 
 export type rootStackNavProps<T extends keyof RootStackParamList>={

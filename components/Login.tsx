@@ -8,13 +8,14 @@ import Button from './Pressable';
 import {globalState} from "../state/reducer/userReducer"
 import {useSelector,useDispatch} from "react-redux"
 import Alert from './Alert';
-
+import { Dispatch} from "redux"
 import {app,rootStackNavProps} from "../App"
 import {signInWithEmailAndPassword,getAuth,Auth} from 'firebase/auth'
 import {ActionTypes} from "../state/actionTypes"
+import {Action} from "../state/actions"
 
 function Login(  {navigation}:rootStackNavProps<"Login">) {
-  const dispatch = useDispatch()
+  const dispatch:Dispatch<Action> = useDispatch()
   const init = useSelector((state:globalState)=> state)
 const {state} = init
     let auth = getAuth(app)
@@ -27,14 +28,19 @@ const {state} = init
        const loginUser = (authe:Auth,email:string, password:string) => {
     signInWithEmailAndPassword(authe,email, password).then((res)=>{
       if(!res){
-        dispatch(ActionTypes.LOGIN_ERROR)
-        
+          dispatch({type:ActionTypes.LOGIN_ERROR})
+           return
       }
-        console.log(res)
-        navigation.navigate("Home")
+      dispatch({type:ActionTypes.LOGIN_SUCCESS,payload:{
+        id:res.user.uid,
+        email:res.user.email!
+      }})
+
+
+     navigation.navigate("Home",{Id:state.user.id as string})
     }).catch (error=> {
       console.log(error)
-    dispatch({type:ActionTypes.LOGIN_ERROR})
+    dispatch({type:ActionTypes.OTHER_ERROR})
   })
 };
 
