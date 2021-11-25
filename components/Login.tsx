@@ -5,13 +5,13 @@ import back from "../assets/images/back.svg"
 import styles from "../style/styles"
 import Sign from './Regbtn';
 import Button from './Pressable';
-import {globalState} from "../state/reducer/userReducer"
-import {useSelector,useDispatch} from "react-redux"
 import Alert from './Alert';
 import { Dispatch} from "redux"
 import {app,rootStackNavProps} from "../App"
 import {signInWithEmailAndPassword,getAuth,Auth} from 'firebase/auth'
 import {ActionTypes} from "../state/actionTypes"
+import {globalState} from "../state/reducer/userReducer"
+import {useSelector,useDispatch} from "react-redux"
 import {Action} from "../state/actions"
 
 function Login(  {navigation}:rootStackNavProps<"Login">) {
@@ -43,8 +43,6 @@ const {state} = init
     dispatch({type:ActionTypes.OTHER_ERROR})
   })
 };
-
-
     const login = async ()=>{
     await loginUser(auth,details.email,details.password)
     }

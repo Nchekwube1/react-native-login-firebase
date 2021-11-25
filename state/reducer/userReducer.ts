@@ -30,6 +30,8 @@ const reducer = (state:userState = initialState,action:Action):userState=>{
             return{ user:{}, error:true,errorText:"Invalid Credentials"}
         case ActionTypes.OTHER_ERROR:
             return{ user:{}, error:true,errorText:"Oops! an error occured, try again"}
+        case ActionTypes.LOG_OUT:
+            return{ user:{}, error:false,errorText:""}
         case ActionTypes.CLOSE_ALERT:
             return{user:{},error:false,errorText:""}
         case ActionTypes.PASSWORD_MISMATCH:

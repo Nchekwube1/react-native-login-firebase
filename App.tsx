@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import {Provider} from "react-redux"
 import {store} from "./state"
 import { Text, View } from 'react-native';
@@ -14,7 +14,12 @@ import Login from './components/Login';
 import {apiKey,authDomain,appId,measurementId,messagingSenderId,projectId,storageBucket} from "@env"
 import {initializeApp} from "firebase/app"
 import Home from './components/Home';
-
+import {ActionTypes} from "./state/actionTypes"
+import {globalState} from "./state/reducer/userReducer"
+import {useSelector,useDispatch} from "react-redux"
+import {Action} from "./state/actions"
+import {onAuthStateChanged,getAuth,User} from "firebase/auth"
+import { Dispatch} from "redux"
 const firebaseConfig = {
 
   apiKey,
@@ -53,8 +58,29 @@ const customFonts ={
 }
 
 const Stack =  createStackNavigator<RootStackParamList>()
-export default function App() {
-     const [isLoaded] = useFonts(customFonts);
+function App() {
+  const dispatch:Dispatch<Action> = useDispatch()
+
+    const init = useSelector((state:globalState)=> state)
+    let auth = getAuth(app)
+
+  const [user,setUser] = useState< User | null>(null)
+  useEffect(() => {
+  onAuthStateChanged(auth,(user)=>
+ {
+    setUser(user)
+        dispatch({type:ActionTypes.LOGIN_SUCCESS,payload:{
+        id:user?.uid!,
+        email:user?.email!
+      }})
+    
+    }
+
+      
+  )
+}, [])
+const {state} = init
+    const [isLoaded] = useFonts(customFonts);
    if (!isLoaded) {
         return(
           <View style={styles.container}>
@@ -64,11 +90,10 @@ export default function App() {
     }
 
     return (
-      <Provider store={store}>
       <NavigationContainer>
          <View style={styles.container}>
       <SafeAreaProvider>
-        <Stack.Navigator initialRouteName={"Landing"}>
+        <Stack.Navigator initialRouteName={user?"Home":"Landing"}>
        <Stack.Screen name="Landing" component={Landing} options={{headerShown:false}} />
        <Stack.Screen name="Register" component={Register} options={{headerShown:false}} />
        <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
@@ -79,6 +104,16 @@ export default function App() {
           </View>
 
    </NavigationContainer>
-   </Provider>
+      
     )
 }
+
+ const AppWrapper =()=>{
+  return(
+      <Provider store={store}>
+  <App/>
+  </Provider>
+  )
+}
+
+export default AppWrapper

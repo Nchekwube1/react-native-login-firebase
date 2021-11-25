@@ -10,6 +10,9 @@ payload:{
 interface LoginError{
     type:ActionTypes.LOGIN_ERROR,
  }
+interface Logout{
+    type:ActionTypes.LOG_OUT,
+ }
 interface PasswordMismatch{
     type:ActionTypes.PASSWORD_MISMATCH,
 }
@@ -22,4 +25,4 @@ interface PasswordShort{
 interface OtherError{
     type:ActionTypes.OTHER_ERROR,
 }
-export type Action  = OtherError|PasswordShort|LoginSuccessAction|LoginError|PasswordMismatch|CloseAlert
+export type Action  = |Logout|OtherError|PasswordShort|LoginSuccessAction|LoginError|PasswordMismatch|CloseAlert
