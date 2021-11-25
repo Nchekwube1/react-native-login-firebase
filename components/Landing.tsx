@@ -12,15 +12,18 @@ function Landing({navigation}:rootStackNavProps<"Landing">) {
     const init = useSelector((state:globalState)=> state)
     const {state} = init
     useEffect(()=>{
-      if(state.user.email!== ""||state.user.email!== undefined||state.user.email!== null){
-        navigation.navigate("Home",{Id:state.user.id as string})
+    //   if(state.user.email!== ""||state.user.email!== undefined||state.user.email!== null){
+    //     
 
-      }
+    //   }
       if(state.user.email=== ""||state.user.email=== undefined||state.user.email=== null){
         navigation.navigate("Landing")
 
+      }else{
+navigation.navigate("Home",{Id:state.user.id as string})
       }
     },[state.user.email])
+    console.log(state)
 
     const loginPress=()=>{
         navigation.navigate("Login")
